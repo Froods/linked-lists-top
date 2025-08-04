@@ -78,7 +78,7 @@ class LinkedList {
 	// Remove last node
 	pop() {
 		let curNode = this.head; // Start point
-		let prevNode;
+		let prevNode; // Keep track of previous node
 
 		while (curNode.next !== null) {
 			// Go to end of array, assign last and second last node to vars
@@ -131,16 +131,62 @@ class LinkedList {
 		str += 'null';
 		return str;
 	}
+
+	// Insert node at specific index
+	insertAt(value, index) {
+		let counter = 0;
+		let curNode = this.head; // Start point
+		let prevNode = this.head; // Keep track of previous node
+
+		if (index > this.size()) {
+			// Check if index is greater than size of list
+			throw new Error('Index is greater than list size.');
+			return;
+		}
+
+		if (index === 0) {
+			// If index is 0, replace this.head
+			const NewNode = new Node(value, this.head);
+			this.head = NewNode;
+			return;
+		}
+
+		while (counter < index) {
+			prevNode = curNode;
+			curNode = curNode.next;
+			counter++;
+		}
+
+		const NewNode = new Node(value, curNode);
+		prevNode.next = NewNode;
+	}
+
+	// Remove node at specific index
+	removeAt(index) {
+		let counter = 0;
+		let curNode = this.head; // Start point
+		let prevNode = this.head; // Keep track of previous node
+
+		if (index >= this.size()) {
+			// Check if index is greater or equal to size of list
+			throw new Error('Index is greater than list size.');
+			return;
+		}
+
+		if (index === 0) {
+			// If index is 0, replace this.head
+			this.head = this.head.next;
+			return;
+		}
+
+		while (counter < index) {
+			prevNode = curNode;
+			curNode = curNode.next;
+			counter++;
+		}
+
+		const nodeBehind = prevNode;
+		const nodeInFront = curNode.next;
+		nodeBehind.next = nodeInFront;
+	}
 }
-
-/// Testing
-
-const list = new LinkedList();
-list.prepend('Abe');
-list.append('Sæl');
-list.append('Hund');
-list.prepend('Egern');
-
-const str = list.toString();
-
-console.log(str);
